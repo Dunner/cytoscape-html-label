@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaluginserg/cytoscape-html-label.git"
+    "url": "https://github.com/onitsin/cytoscape-label.git"
   },
   "ignore": [
     "**/.*",
