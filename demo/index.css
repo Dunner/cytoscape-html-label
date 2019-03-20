@@ -66,3 +66,9 @@ p {
     margin-top: 0.4em;
     text-decoration: line-through;
 }
+.cy-title__edge {
+    color: red;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: underline;
+}

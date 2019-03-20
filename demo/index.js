@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         elements: sampleDataset
     });
 
-    cy.nodeHtmlLabel([
+    cy.htmlLabel([
         {
             query: 'node[type=1]',
             cssClass: 'cy-title',
@@ -176,6 +176,16 @@ document.addEventListener('DOMContentLoaded', function () {
             valignBox: "bottom",
             tpl: function (data) {
                 return '<p class="cy-title__none">' + data.name + '</p>';
+            }
+        },
+        {
+            query: 'edge[target="16150999"]',
+            cssClass: 'cy-title',
+            halign: "right",
+            halignBox: "right",
+            ealign: 'midpoint',
+            tpl: function (data) {
+                return '<p class="cy-title__edge">' + data.id + '</p>';
             }
         }
     ]);

@@ -24,7 +24,7 @@ describe('base', function () {
 
   function isMainDefinedTest() {
     isCyDefinedTest();
-    expect(typeof cy.nodeHtmlLabel).toEqual('function');
+    expect(typeof cy.htmlLabel).toEqual('function');
   }
 
   function getWrapDiv() {
@@ -32,7 +32,7 @@ describe('base', function () {
   }
 
   function cyInitPlugin() {
-    cy.nodeHtmlLabel([
+    cy.htmlLabel([
       {
         query: '.l1',
         wrapCssClasses: 'cy-title',
@@ -66,17 +66,17 @@ describe('base', function () {
     isCyDefinedTest();
   });
 
-  it('nodeHtmlLabel was defined in cy', function () {
+  it('htmlLabel was defined in cy', function () {
     isMainDefinedTest();
   });
 
-  it('nodeHtmlLabel can init', function () {
+  it('htmlLabel can init', function () {
     cyInitPlugin();
     expect(getWrapDiv().childNodes.length).toEqual(0);
     isMainDefinedTest();
   });
 
-  it('nodeHtmlLabel can reinit', function () {
+  it('htmlLabel can reinit', function () {
     cyInitPlugin();
     cyUpdateElements();
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 100;

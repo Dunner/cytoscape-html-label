@@ -1,14 +1,14 @@
-cytoscape-node-html-label
+cytoscape-html-label
 ================================================================================
 
 
 ## Description
 
-This extension provide ability adding labels for Cytoscape nodes. Simple example:
+This extension provide ability adding labels for Cytoscape nodes and edges. Simple example:
 
-`cyInstance.nodeHtmlLabel( [{ tpl: d => '<div>' + d + '</div>' }] );`
+`cyInstance.htmlLabel( [{ tpl: d => '<div>' + d + '</div>' }] );`
 
-Demo: https://kaluginserg.github.io/cytoscape-node-html-label/
+Demo: https://onitsin.github.io/cytoscape-html-label/
 
 ## Fitures
 - optimised for high performance with high number nodes, for smooth panning and zooming.
@@ -16,20 +16,20 @@ Demo: https://kaluginserg.github.io/cytoscape-node-html-label/
 
 ## Dependencies
 
- * Cytoscape.js ^3.0.0
+ * Cytoscape.js ^3.5.0
 
 
 ## Usage instructions
 
 Download the library:
- * via npm: `npm install cytoscape-node-html-label`,
- * via bower: `bower install cytoscape-node-html-label`, or
+ * via npm: `npm install cytoscape-html-label`,
+ * via bower: `bower install cytoscape-html-label`, or
  * via direct download in the repository (probably from a tag).
 
 #### Plain HTML/JS has the extension registered for you automatically:
 ```html
 <script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
-<script src="cytoscape-node-html-label.js"></script>
+<script src="cytoscape-html-label.js"></script>
 ```
 
 #### RequireJs approach:
@@ -38,24 +38,24 @@ Download the library:
 CommonJS:
 ```js
 var cytoscape = require('cytoscape');
-var nodeHtmlLabel = require('cytoscape-node-html-label');
-nodeHtmlLabel( cytoscape ); // register extension
+var htmlLabel = require('cytoscape-html-label');
+htmlLabel( cytoscape ); // register extension
 ```
 
 AMD:
 ```js
-require(['cytoscape', 'cytoscape-node-html-label'], function( cytoscape, nodeHtmlLabel ){
-  nodeHtmlLabel( cytoscape ); // register extension
+require(['cytoscape', 'cytoscape-html-label'], function( cytoscape, htmlLabel ){
+  htmlLabel( cytoscape ); // register extension
 });
 ```
 
 
 ## API
 
-nodeHtmlLabel parameter is an array of options:
+htmlLabel parameter is an array of options:
 
 ```js
-cyInstance.nodeHtmlLabel(
+cyInstance.htmlLabel(
 [
     {
         query: 'node', // cytoscape query selector
@@ -63,6 +63,7 @@ cyInstance.nodeHtmlLabel(
         valign: 'center', // title vertical position. Can be 'top',''center, 'bottom'
         halignBox: 'center', // title vertical position. Can be 'left',''center, 'right'
         valignBox: 'center', // title relative box vertical position. Can be 'top',''center, 'bottom'
+        ealign: 'midpoint', // title position on edge. Can be 'source', 'midpoint', 'target'
         cssClass: '', // any classes will be as attribute of <div> container for every title
         tpl: function(data){return '<span>' + data + '</span>';} // your html template here
     }
@@ -81,15 +82,17 @@ var cyInstance = cytoscape({
         name: 'random'
     },
     elements: [ // your cy elements
-        { group: "nodes", data: { id: 'a1', name: 'a10' }, classes: 'l1' },
-        { group: "nodes", data: { id: 'a1', name: 'a10' }, classes: 'l1' },
-        { group: "nodes", data: { id: 'a1', name: 'a10' }, classes: 'l1' },
-        { group: "nodes", data: { id: 'a5', name: 'a5' }, classes: 'l2' }
+        { group: "nodes", data: { id: 'a1', name: 'a1' }, classes: 'l1' },
+        { group: "nodes", data: { id: 'a2', name: 'a2' }, classes: 'l1' },
+        { group: "nodes", data: { id: 'a3', name: 'a3' }, classes: 'l1' },
+        { group: "nodes", data: { id: 'a5', name: 'a5' }, classes: 'l2' },
+        { group: "edges", data: { id: 'a1_a5', source: 'a1', target: 'a5'}, classes: 'e1'},
+        { group: "edges", data: { id: 'a2_a5', source: 'a2', target: 'a5'}, classes: 'e1'},
     ]
 });
 
-// set nodeHtmlLabel for your Cy instance
-cyInstance.nodeHtmlLabel([{
+// set htmlLabel for your Cy instance
+cyInstance.htmlLabel([{
         query: '.l1',
         valign: "top",
         halign: "left",
@@ -104,16 +107,23 @@ cyInstance.nodeHtmlLabel([{
         tpl: function(data) {
             return '<p class="cy-title__p1">' + data.id + '</p>' + '<p  class="cy-title__p2">' + data.name + '</p>';
         }
+    },
+    {
+        query: '.e1',
+        ealign: 'midpoint',
+        tpl: function(data) {
+            return '<b>' + data.id + '</b>';
+        }
     }
 ]);
 ```
 
-Demo here: https://kaluginserg.github.io/cytoscape-node-html-label/
+Demo here: https://onitsin.github.io/cytoscape-html-label/
 
 
 ## how to build and develop:
 2) Run `npm start`
-2) Create change in src/cytoscape-node-html-label.ts
+2) Create change in src/cytoscape-html-label.ts
 2) When finished => `npm run test`
 2) Prepare js and min files: `npm run build`
 2) `git commit`
