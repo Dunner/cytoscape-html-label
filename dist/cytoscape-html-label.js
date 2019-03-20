@@ -150,7 +150,7 @@
             var _cyContainer = _cy.container();
             var _titlesContainer = document.createElement("div");
             var _cyCanvas = _cyContainer.querySelector("canvas");
-            var cur = _cyContainer.querySelector("[class^='cy-node-html']");
+            var cur = _cyContainer.querySelector("[class^='cy-html']");
             if (cur) {
                 _cyCanvas.parentNode.removeChild(cur);
             }
@@ -239,7 +239,7 @@
             else if (el.isEdge()) {
                 var param = $$find(_params.slice().reverse(), function (x) { return el.is(x.query); });
                 if (param) {
-                    var pos = void 0;
+                    var pos = void 0, radius = (typeof param.eradius === undefined) ? 20 : param.eradius;
                     if (param.ealign === 'source') {
                         pos = el.sourceEndpoint();
                     }
@@ -250,8 +250,8 @@
                         pos = el.midpoint();
                     }
                     return {
-                        w: 20,
-                        h: 20,
+                        w: radius,
+                        h: radius,
                         x: pos.x,
                         y: pos.y
                     };

@@ -71,4 +71,6 @@ p {
     font-size: 1em;
     font-weight: bold;
     text-decoration: underline;
+    height: 50px;
+    border-left: 1px dotted red;
 }

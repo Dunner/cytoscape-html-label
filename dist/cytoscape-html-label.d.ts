@@ -9,6 +9,7 @@ interface CytoscapeHtmlParams {
     halign?: IHAlign;
     valign?: IVAlign;
     ealign?: IEAlign;
+    eradius?: number;
     halignBox?: IHAlign;
     valignBox?: IVAlign;
     cssClass?: string;

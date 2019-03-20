@@ -182,8 +182,11 @@ document.addEventListener('DOMContentLoaded', function () {
             query: 'edge[target="16150999"]',
             cssClass: 'cy-title',
             halign: "right",
+            valign: "bottom",
             halignBox: "right",
+            valignBox: "bottom",
             ealign: 'midpoint',
+            eradius: 0,
             tpl: function (data) {
                 return '<p class="cy-title__edge">' + data.id + '</p>';
             }

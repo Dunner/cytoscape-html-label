@@ -10,6 +10,7 @@ interface CytoscapeHtmlParams {
   halign?: IHAlign;
   valign?: IVAlign;
   ealign?: IEAlign;
+  eradius?: number;
   halignBox?: IHAlign;
   valignBox?: IVAlign;
   cssClass?: string;
@@ -238,7 +239,7 @@ interface CytoscapeHtmlParams {
       let _titlesContainer = document.createElement("div");
 
       let _cyCanvas = _cyContainer.querySelector("canvas");
-      let cur = _cyContainer.querySelector("[class^='cy-node-html']");
+      let cur = _cyContainer.querySelector("[class^='cy-html']");
       if (cur) {
         _cyCanvas.parentNode.removeChild(cur);
       }
@@ -334,13 +335,13 @@ interface CytoscapeHtmlParams {
       } else if (el.isEdge()) {
         let param = $$find(_params.slice().reverse(), x => el.is(x.query));
         if (param) {
-          let pos;
+          let pos, radius = (typeof param.eradius === undefined) ? 20 : param.eradius;
           if (param.ealign === 'source') { pos = el.sourceEndpoint() }
           else if (param.ealign === 'target') { pos = el.targetEndpoint() }
           else { pos = el.midpoint() }
           return {
-            w: 20,
-            h: 20,
+            w: radius,
+            h: radius,
             x: pos.x,
             y: pos.y
           }
