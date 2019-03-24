@@ -10,7 +10,7 @@ interface CytoscapeHtmlParams {
   halign?: IHAlign;
   valign?: IVAlign;
   ealign?: IEAlign;
-  eradius?: number;
+  autorotate?: boolean;
   halignBox?: IHAlign;
   valignBox?: IVAlign;
   cssClass?: string;
@@ -47,6 +47,7 @@ interface CytoscapeHtmlParams {
     y: number;
     w: number;
     h: number;
+    a: number;
   }
 
   interface ILabelElement {
@@ -142,6 +143,7 @@ interface CytoscapeHtmlParams {
       const prev = this._position;
       const x = position.x + this._align[0] * position.w;
       const y = position.y + this._align[1] * position.h;
+      const a = position.a;
 
       if (!prev || prev[0] !== x || prev[1] !== y) {
         this._position = [x, y];
@@ -150,6 +152,12 @@ interface CytoscapeHtmlParams {
         let valAbs = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) `;
         let val = valRel + valAbs;
         let stl = <any>this._node.style;
+        if (a) { 
+          val += `rotate(${a.toFixed(2)}deg)`;
+          let xo = Math.abs(this._align[2]);
+          let yo = Math.abs(this._align[3]);
+          stl.transformOrigin = `${xo}% ${yo}% 0px`;
+        }
         stl.webkitTransform = val;
         stl.msTransform = val;
         stl.transform = val;
@@ -324,26 +332,45 @@ interface CytoscapeHtmlParams {
       });
     }
 
+    function lineAngleFromDelta(dx: number, dy: number): number {
+      var angle = Math.atan(dy / dx) ;
+      if (dx === 0 && angle < 0) {
+        angle = angle * -1;
+      }
+      return angle * 180/Math.PI;
+    };
+
+    function lineAngle(p0: any, p1: any): number {
+      var dx = p1.x - p0.x;
+      var dy = p1.y - p0.y;
+      return lineAngleFromDelta(dx, dy);
+    };
+
+
     function getPosition(el: any): ICytoscapeHtmlPosition {
       if (el.isNode()) {
        return {
           w: el.width(),
           h: el.height(),
           x: el.position("x"),
-          y: el.position("y")
+          y: el.position("y"),
+          a: 0
         };
       } else if (el.isEdge()) {
         let param = $$find(_params.slice().reverse(), x => el.is(x.query));
         if (param) {
-          let pos, radius = (typeof param.eradius === undefined) ? 20 : param.eradius;
+          let pos;
+          let angle = 0;
           if (param.ealign === 'source') { pos = el.sourceEndpoint() }
           else if (param.ealign === 'target') { pos = el.targetEndpoint() }
           else { pos = el.midpoint() }
+          if (param.autorotate) { angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint()) }
           return {
-            w: radius,
-            h: radius,
+            w: 0,
+            h: 0,
             x: pos.x,
-            y: pos.y
+            y: pos.y,
+            a: angle
           }
         }
       }

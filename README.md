@@ -64,7 +64,7 @@ cyInstance.htmlLabel(
         halignBox: 'center', // title vertical position. Can be 'left',''center, 'right'
         valignBox: 'center', // title relative box vertical position. Can be 'top',''center, 'bottom'
         ealign: 'midpoint', // title position on edge. Can be 'source', 'midpoint', 'target'
-        eradius: 1, // distance from edge point, default 20
+        autorotate: true, // autorotate can be used to align the label to the edge 
         cssClass: '', // any classes will be as attribute of <div> container for every title
         tpl: function(data){return '<span>' + data + '</span>';} // your html template here
     }

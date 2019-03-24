@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 selector: "edge[type=2]",
                 style: {
+                    "curve-style": "haystack",
                     "color": "#D9952F",
                     "line-color": '#D9952F',
                     'target-arrow-color': "#D9952F"
@@ -186,11 +187,22 @@ document.addEventListener('DOMContentLoaded', function () {
             halignBox: "right",
             valignBox: "bottom",
             ealign: 'midpoint',
-            eradius: 0,
             tpl: function (data) {
                 return '<p class="cy-title__edge">' + data.id + '</p>';
             }
+        },
+        {
+            query: 'edge[target="16150999"][type=2]',
+            cssClass: 'cy-title',
+            halignBox: "center",
+            valignBox: "top",
+            ealign: 'midpoint',
+            autorotate: true,
+            tpl: function (data) {
+                return '<p class="cy-title__edge2">' + data.id + '</p>';
+            }
         }
+
     ]);
 
     cy.animate({

@@ -74,3 +74,9 @@ p {
     height: 50px;
     border-left: 1px dotted red;
 }
+.cy-title__edge2 {
+    color: red;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: underline;
+}

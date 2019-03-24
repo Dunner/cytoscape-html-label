@@ -70,12 +70,19 @@
             var prev = this._position;
             var x = position.x + this._align[0] * position.w;
             var y = position.y + this._align[1] * position.h;
+            var a = position.a;
             if (!prev || prev[0] !== x || prev[1] !== y) {
                 this._position = [x, y];
                 var valRel = "translate(" + this._align[2] + "%," + this._align[3] + "%) ";
                 var valAbs = "translate(" + x.toFixed(2) + "px," + y.toFixed(2) + "px) ";
                 var val = valRel + valAbs;
                 var stl = this._node.style;
+                if (a) {
+                    val += "rotate(" + a.toFixed(2) + "deg)";
+                    var xo = Math.abs(this._align[2]);
+                    var yo = Math.abs(this._align[3]);
+                    stl.transformOrigin = xo + "% " + yo + "% 0px";
+                }
                 stl.webkitTransform = val;
                 stl.msTransform = val;
                 stl.transform = val;
@@ -227,19 +234,35 @@
                 zoom: cy.zoom()
             });
         }
+        function lineAngleFromDelta(dx, dy) {
+            var angle = Math.atan(dy / dx);
+            if (dx === 0 && angle < 0) {
+                angle = angle * -1;
+            }
+            return angle * 180 / Math.PI;
+        }
+        ;
+        function lineAngle(p0, p1) {
+            var dx = p1.x - p0.x;
+            var dy = p1.y - p0.y;
+            return lineAngleFromDelta(dx, dy);
+        }
+        ;
         function getPosition(el) {
             if (el.isNode()) {
                 return {
                     w: el.width(),
                     h: el.height(),
                     x: el.position("x"),
-                    y: el.position("y")
+                    y: el.position("y"),
+                    a: 0
                 };
             }
             else if (el.isEdge()) {
                 var param = $$find(_params.slice().reverse(), function (x) { return el.is(x.query); });
                 if (param) {
-                    var pos = void 0, radius = (typeof param.eradius === undefined) ? 20 : param.eradius;
+                    var pos = void 0;
+                    var angle = 0;
                     if (param.ealign === 'source') {
                         pos = el.sourceEndpoint();
                     }
@@ -249,11 +272,15 @@
                     else {
                         pos = el.midpoint();
                     }
+                    if (param.autorotate) {
+                        angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint());
+                    }
                     return {
-                        w: radius,
-                        h: radius,
+                        w: 0,
+                        h: 0,
                         x: pos.x,
-                        y: pos.y
+                        y: pos.y,
+                        a: angle
                     };
                 }
             }
