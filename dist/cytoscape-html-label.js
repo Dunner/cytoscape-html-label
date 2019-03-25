@@ -137,6 +137,9 @@
             stl.msTransformOrigin = origin;
             stl.transformOrigin = origin;
         };
+        LabelContainer.prototype.has = function (id) {
+            return this._elements[id] !== undefined;
+        };
         return LabelContainer;
     }());
     function cyHtmlLabel(_cy, params) {
@@ -207,6 +210,8 @@
             _lc.removeElemById(ev.target.id());
         }
         function moveCyHandler(ev) {
+            if (!_lc.has(ev.target.id()))
+                return;
             _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
             ev.target.connectedEdges().forEach(function (el) {
                 _lc.updateElemPosition(el.id(), getPosition(el));
@@ -234,20 +239,15 @@
                 zoom: cy.zoom()
             });
         }
-        function lineAngleFromDelta(dx, dy) {
+        function lineAngle(p0, p1) {
+            var dx = p1.x - p0.x;
+            var dy = p1.y - p0.y;
             var angle = Math.atan(dy / dx);
             if (dx === 0 && angle < 0) {
                 angle = angle * -1;
             }
             return angle * 180 / Math.PI;
         }
-        ;
-        function lineAngle(p0, p1) {
-            var dx = p1.x - p0.x;
-            var dy = p1.y - p0.y;
-            return lineAngleFromDelta(dx, dy);
-        }
-        ;
         function getPosition(el) {
             if (el.isNode()) {
                 return {
@@ -261,8 +261,7 @@
             else if (el.isEdge()) {
                 var param = $$find(_params.slice().reverse(), function (x) { return el.is(x.query); });
                 if (param) {
-                    var pos = void 0;
-                    var angle = 0;
+                    var pos = void 0, angle = 0, gfx = el.data('gfx') || {};
                     if (param.ealign === 'source') {
                         pos = el.sourceEndpoint();
                     }
@@ -272,7 +271,7 @@
                     else {
                         pos = el.midpoint();
                     }
-                    if (param.autorotate) {
+                    if (param.autorotate || gfx.autorotate) {
                         angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint());
                     }
                     return {

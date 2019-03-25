@@ -223,6 +223,9 @@ interface CytoscapeHtmlParams {
       stl.msTransformOrigin = origin;
       stl.transformOrigin = origin;
     }
+    has(id: string): boolean {
+      return this._elements[id] !== undefined
+    }
   }
 
   function cyHtmlLabel(_cy: any, params: CytoscapeHtmlParams[]) {
@@ -304,6 +307,7 @@ interface CytoscapeHtmlParams {
     }
 
     function moveCyHandler(ev: ICyEventObject) {
+      if (!_lc.has(ev.target.id())) return;
       _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
       ev.target.connectedEdges().forEach((el: any) => {
         _lc.updateElemPosition(el.id(), getPosition(el))
@@ -332,20 +336,15 @@ interface CytoscapeHtmlParams {
       });
     }
 
-    function lineAngleFromDelta(dx: number, dy: number): number {
-      var angle = Math.atan(dy / dx) ;
+    function lineAngle(p0: any, p1: any): number {
+      var dx = p1.x - p0.x;
+      var dy = p1.y - p0.y;
+      var angle = Math.atan(dy / dx);
       if (dx === 0 && angle < 0) {
         angle = angle * -1;
       }
       return angle * 180/Math.PI;
-    };
-
-    function lineAngle(p0: any, p1: any): number {
-      var dx = p1.x - p0.x;
-      var dy = p1.y - p0.y;
-      return lineAngleFromDelta(dx, dy);
-    };
-
+    }
 
     function getPosition(el: any): ICytoscapeHtmlPosition {
       if (el.isNode()) {
@@ -359,12 +358,11 @@ interface CytoscapeHtmlParams {
       } else if (el.isEdge()) {
         let param = $$find(_params.slice().reverse(), x => el.is(x.query));
         if (param) {
-          let pos;
-          let angle = 0;
+          let pos, angle = 0, gfx = el.data('gfx') || {};
           if (param.ealign === 'source') { pos = el.sourceEndpoint() }
           else if (param.ealign === 'target') { pos = el.targetEndpoint() }
           else { pos = el.midpoint() }
-          if (param.autorotate) { angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint()) }
+          if (param.autorotate || gfx.autorotate) { angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint()) }
           return {
             w: 0,
             h: 0,
