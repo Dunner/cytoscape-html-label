@@ -261,7 +261,7 @@
             else if (el.isEdge()) {
                 var param = $$find(_params.slice().reverse(), function (x) { return el.is(x.query); });
                 if (param) {
-                    var pos = void 0, angle = 0, gfx = el.data('gfx') || {};
+                    var pos = void 0, angle = 0;
                     if (param.ealign === 'source') {
                         pos = el.sourceEndpoint();
                     }
@@ -271,7 +271,7 @@
                     else {
                         pos = el.midpoint();
                     }
-                    if (param.autorotate || gfx.autorotate) {
+                    if (param.autorotate || el.data('label_autorotate')) {
                         angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint());
                     }
                     return {

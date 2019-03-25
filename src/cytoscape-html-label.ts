@@ -358,11 +358,11 @@ interface CytoscapeHtmlParams {
       } else if (el.isEdge()) {
         let param = $$find(_params.slice().reverse(), x => el.is(x.query));
         if (param) {
-          let pos, angle = 0, gfx = el.data('gfx') || {};
+          let pos, angle = 0;
           if (param.ealign === 'source') { pos = el.sourceEndpoint() }
           else if (param.ealign === 'target') { pos = el.targetEndpoint() }
           else { pos = el.midpoint() }
-          if (param.autorotate || gfx.autorotate) { angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint()) }
+          if (param.autorotate || el.data('label_autorotate')) { angle = lineAngle(el.sourceEndpoint(), el.targetEndpoint()) }
           return {
             w: 0,
             h: 0,
