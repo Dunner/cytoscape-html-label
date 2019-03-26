@@ -1,6 +1,6 @@
 {
   "name": "cytoscape-html-label",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "labels for cytoscape elements",
   "author": "Onitsin Sleg <onitsin@yandex.ru> (https://github.com/onitsin)",
   "main": "./dist/cytoscape-html-label.js",

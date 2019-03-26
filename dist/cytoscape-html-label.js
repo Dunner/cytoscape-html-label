@@ -210,12 +210,13 @@
             _lc.removeElemById(ev.target.id());
         }
         function moveCyHandler(ev) {
-            if (!_lc.has(ev.target.id()))
-                return;
-            _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
-            ev.target.connectedEdges().forEach(function (el) {
-                _lc.updateElemPosition(el.id(), getPosition(el));
-            });
+            if (_lc.has(ev.target.id()) ||
+                ev.target.connectedEdges(function (ele) { return _lc.has(ele.id()); }).size()) {
+                _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
+                ev.target.connectedEdges().forEach(function (el) {
+                    _lc.updateElemPosition(el.id(), getPosition(el));
+                });
+            }
         }
         function updateDataCyHandler(ev) {
             setTimeout(function () {

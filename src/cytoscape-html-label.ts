@@ -307,11 +307,13 @@ interface CytoscapeHtmlParams {
     }
 
     function moveCyHandler(ev: ICyEventObject) {
-      if (!_lc.has(ev.target.id())) return;
-      _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
-      ev.target.connectedEdges().forEach((el: any) => {
-        _lc.updateElemPosition(el.id(), getPosition(el))
-      });
+      if ( _lc.has(ev.target.id()) || 
+           ev.target.connectedEdges( ( ele: any ) => _lc.has(ele.id()) ).size() ) {
+        _lc.updateElemPosition(ev.target.id(), getPosition(ev.target));
+        ev.target.connectedEdges().forEach((el: any) => {
+          _lc.updateElemPosition(el.id(), getPosition(el))
+        });
+      }
     }
 
     function updateDataCyHandler(ev: ICyEventObject) {
