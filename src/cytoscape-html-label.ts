@@ -248,8 +248,8 @@ interface CytoscapeHtmlParams {
     function createLabelContainer(): LabelContainer {
       let _cyContainer = _cy.container();
       let _titlesContainer = document.createElement("div");
-
-      let _cyCanvas = _cyContainer.querySelector("canvas");
+      var canvases = document.querySelectorAll("cavas");
+      var _cyCanvas = canvases[canvases.length- 1];
       let cur = _cyContainer.querySelector("[class^='cy-html']");
       if (cur) {
         _cyCanvas.parentNode.removeChild(cur);

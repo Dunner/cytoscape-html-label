@@ -159,7 +159,8 @@
         function createLabelContainer() {
             var _cyContainer = _cy.container();
             var _titlesContainer = document.createElement("div");
-            var _cyCanvas = _cyContainer.querySelector("canvas");
+            var canvases = document.querySelectorAll("cavas");
+            var _cyCanvas = canvases[canvases.length - 1];
             var cur = _cyContainer.querySelector("[class^='cy-html']");
             if (cur) {
                 _cyCanvas.parentNode.removeChild(cur);
